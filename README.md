@@ -28,3 +28,191 @@ Our proposed work aims to develop a new network intrusion detection architecture
 The proposed system will focus on three main improvements: better multi-class attack classification and generalization, improved explainability of the model's decisions, and moving beyond the conventional Transformer architecture. The architecture will be designed and evaluated on network intrusion datasets to determine whether it can improve detection performance while also providing better understanding of the model's predictions.
 
 Our current work focuses on studying the base architecture, identifying its limitations, designing the new architecture, and implementing and evaluating the proposed improvements. The final architecture and its individual components will be refined during the implementation and experimentation stages.
+## Technologies and Concepts
+
+### Programming and Libraries
+- Python
+- PyTorch
+- NumPy
+- Pandas
+- Scikit-learn
+- Matplotlib
+
+### Data Preprocessing
+- Data Cleaning
+- Feature Tokenization
+- Feature Embedding
+- One-Hot Encoding
+- Min-Max Normalization
+
+### Deep Learning and Model Concepts
+- Attention Mechanism
+- Multi-Head Attention
+- Transformer Encoder
+- Relational Attention
+- Feature Interaction
+- Residual Connections
+- Layer Normalization
+- Softmax Classification
+- Focal Loss
+
+### Intrusion Detection Concepts
+- Network Intrusion Detection Systems (IDS)
+- Binary Classification
+- Multi-Class Classification
+- Attack Pattern Detection
+- Generalization to Different Network Traffic
+
+  ## Base Paper Architecture — Novel-IDS
+
+The Novel-IDS model follows a multi-scale feature extraction and Transformer-based learning approach. The overall architecture is shown below:
+
+```text
+┌─────────────────────────────┐
+│     NETWORK TRAFFIC DATA    │
+│                             │
+│ NSL-KDD / CIC-DDoS2019 /    │
+│ UNSW-NB15                   │
+└──────────────┬──────────────┘
+               │
+               ▼
+    ┌─────────────────────┐
+    │    PREPROCESSING    │
+    ├─────────────────────┤
+    │ 1. One-hot encoding │
+    │ 2. Outlier handling │
+    │ 3. Min-Max normalize│
+    │ 4. Matrixization    │
+    └──────────┬──────────┘
+               │
+               ▼
+         2-D Feature Matrix
+               │
+               ▼
+      ┌──────────────────────────────┐
+      │       MULTI-SCALE CNN        │
+      │      FEATURE EXTRACTION      │
+      └──────────────────────────────┘
+               │
+          ┌────┼────┐
+          ▼    ▼    ▼
+     ┌────────┐ ┌────────┐ ┌────────┐
+     │BRANCH 1│ │BRANCH 2│ │BRANCH 3│
+     │ 1×1    │ │ 1×1    │ │ 1×1    │
+     │ Conv   │ │ Conv   │ │ Conv   │
+     │        │ │   ↓    │ │   ↓    │
+     │        │ │ 3×3    │ │5×5-like│
+     │        │ │ Conv   │ │/dilated│
+     └────┬───┘ └────┬───┘ └────┬───┘
+          │          │          │
+          └──────────┼──────────┘
+                     │
+                     ▼
+           ┌─────────────────┐
+           │       PwP       │
+           │ Patching with   │
+           │    Pooling      │
+           └────────┬────────┘
+                    │
+          ┌─────────┼─────────┐
+          ▼         ▼         ▼
+    ┌───────────┐ ┌───────────┐ ┌───────────┐
+    │Transformer│ │Transformer│ │Transformer│
+    │ Backbone 1│ │ Backbone 2│ │ Backbone 3│
+    └─────┬─────┘ └─────┬─────┘ └─────┬─────┘
+          │              │              │
+          │       Each Transformer     │
+          │       contains:            │
+          │       • Positional Encoding│
+          │       • Multi-Head         │
+          │         Self-Attention     │
+          │       • Layer Normalization│
+          │       • Feed-Forward NN    │
+          │              │              │
+          └──────────────┼──────────────┘
+                         ▼
+                ┌─────────────────┐
+                │       CFE       │
+                │ Cross Feature   │
+                │   Enrichment    │
+                └────────┬────────┘
+                         │
+                Features from all
+                3 scales interact
+                         │
+                         ▼
+                ┌─────────────────┐
+                │  3 Linear Layers│
+                │    Classifier   │
+                └────────┬────────┘
+                         │
+                         ▼
+              ┌─────────────────────┐
+              │    FINAL OUTPUT     │
+              │                     │
+              │ Binary:             │
+              │ Normal / Attack     │
+              │                     │
+              │ Multi-class:        │
+              │ Attack category     │
+              └─────────────────────┘
+
+                    TRAINING
+                       │
+                       ▼
+                 Focal Loss
+                       +
+                 Adam Optimizer
+```
+
+### Base Architecture Summary
+
+The Novel-IDS architecture first preprocesses network traffic data and converts it into a 2-D feature matrix. A multi-scale CNN is then used to extract features at different scales. The extracted features are processed using patching with pooling and passed through three Transformer backbones. The Transformer components use positional encoding, multi-head self-attention, layer normalization, and feed-forward networks. The features from different scales are then combined using Cross Feature Enrichment (CFE) before being passed to the classifier. The model can be trained using focal loss with the Adam optimizer and can perform binary or multi-class classification.
+ 
+  ## Proposed Architecture
+
+Our proposed architecture is designed to learn relationships between
+network traffic features instead of directly relying on the conventional
+Transformer architecture used in the base paper.
+
+The proposed architecture follows the flow below:
+
+Existing CSE Dataset
+        ↓
+Normalization
+        ↓
+Feature Tokenization
+        ↓
+Feature Embedding
+        ↓
+Relational Attention
+        ↓
+Feature Representation
+        +
+Cross-Feature Relationship Learning
+        ↓
+Relation-Aware Q/K/V
+        ↓
+Multi-Relation Heads
+        ↓
+Learning Different Types of Feature Relationships
+        ↓
+Relation Aggregation
+        ↓
+Residual Connection + Normalization
+        ↓
+Feature Interaction Block
+        ↓
+Learning Higher-Level Attack Patterns
+        ↓
+Residual Connection + Normalization
+        ↓
+Global Flow Representation
+        ↓
+Classification Head
+        ↓
+Linear Layer
+        ↓
+Softmax
+        ↓
+Binary Classification / Multi-Class Classification
