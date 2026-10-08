@@ -169,14 +169,13 @@ The Novel-IDS model follows a multi-scale feature extraction and Transformer-bas
 
 The Novel-IDS architecture first preprocesses network traffic data and converts it into a 2-D feature matrix. A multi-scale CNN is then used to extract features at different scales. The extracted features are processed using patching with pooling and passed through three Transformer backbones. The Transformer components use positional encoding, multi-head self-attention, layer normalization, and feed-forward networks. The features from different scales are then combined using Cross Feature Enrichment (CFE) before being passed to the classifier. The model can be trained using focal loss with the Adam optimizer and can perform binary or multi-class classification.
  
-  ## Proposed Architecture
+ ## Proposed Architecture
 
-Our proposed architecture is designed to learn relationships between
-network traffic features instead of directly relying on the conventional
-Transformer architecture used in the base paper.
+Our proposed architecture is designed to learn relationships between network traffic features instead of directly relying on the conventional Transformer architecture used in the base paper.
 
 The proposed architecture follows the flow below:
 
+```text
 Existing CSE Dataset
         ↓
 Normalization
@@ -191,7 +190,7 @@ Feature Representation
         +
 Cross-Feature Relationship Learning
         ↓
-Relation-Aware Q/K/V
+Relation-Aware Q / K / V
         ↓
 Multi-Relation Heads
         ↓
@@ -215,4 +214,6 @@ Linear Layer
         ↓
 Softmax
         ↓
+Binary Classification / Multi-Class Classification
+```
 Binary Classification / Multi-Class Classification
